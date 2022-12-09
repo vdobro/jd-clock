@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import styles from '../styles/clock.module.css';
+
 export type TimerProps = {
   startTime: number;
   name: string;
@@ -56,15 +58,15 @@ export function Timer(props: TimerProps): JSX.Element {
   }, []);
 
   return (
-    <div className="card">
-      <p className="timer-header" style={{color: color}}>{name}</p>
-      <p className={"timer-value" + ((totalSeconds < 0) ? ' timer-overflow' : '')}>
+    <div className={styles.card}>
+      <p className={styles.header} style={{color: color}}>{name}</p>
+      <p className={styles.value + ((totalSeconds < 0) ? ` ${styles.overflow}` : '')}>
         {totalSeconds < 0 && <span>-</span>}
         {minutes !== 0 && <span>{Math.abs(minutes)}m </span>}
         <span>{Math.abs(seconds)}s</span>
       </p>
       
-      <button className="timer-switch" onClick={startOrSuspend}>
+      <button className={styles.switch} onClick={startOrSuspend}>
         {running ? "Stabdyti" : "Leisti"}
       </button>
     </div>

@@ -23,6 +23,7 @@ a {
   color: #646cff;
   text-decoration: inherit;
 }
+
 a:hover {
   color: #535bf2;
 }
@@ -33,46 +34,11 @@ html, body {
   width: 100%;
 }
 
-.container {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
+body {
   display: flex;
-  flex-wrap: wrap;
-  column-count: 2;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-}
-
-.card {
-  margin: 16px;
-  padding: 16px;
-  
-  border-radius: 25px;
-  background: #e0e0e0;
-  box-shadow:  -10px 10px 20px #cacaca,
-             10px -10px 20px #f6f6f6;
-}
-
-.timer-header {
-  margin-top: 0;
-  font-weight: bold;
-  font-size: larger;
-}
-
-.timer-value {
-  font-size: 2.5em;
-  font-weight: 700;
-  text-align: center;
-  width: 4em;
-}
-
-.timer-overflow {
-  color: red;
 }
 
 button {
@@ -106,6 +72,7 @@ button:focus-visible {
     color: #747bff;
   }
   button {
-    background-color: #f9f9f9;
+    background-color: #f5f5f5;
+    border-color: #e0e0e0;
   }
 }
