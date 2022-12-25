@@ -1,0 +1,25 @@
+.formRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin: 0.5rem;
+
+  & > * {
+    flex: 0 1 50%;
+  }
+
+  & > label {
+    text-align: right;
+    margin-right: 10px;
+  }
+}
+
+.form {
+  max-width: 500px;
+}
+
+.finish {
+  width: 100%;
+  margin: 0.5rem;
+}

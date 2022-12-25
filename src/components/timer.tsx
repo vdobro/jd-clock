@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
-import styles from '../styles/clock.module.css';
+import styles from '../styles/clock.module.scss';
+import appStyles from "../styles/app.module.scss";
 
 export type TimerProps = {
   startTime: number;
@@ -14,7 +15,7 @@ export function Timer(props: TimerProps): JSX.Element {
   const { startTime, name, color } = props;
 
   const [running, setRunning] = useState<boolean>(false);
-  const [intervalRunner, setIntervalRunner] = useState<number | null>(null);
+  const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timer | null>(null);
 
   const [timeLeftMs, setTimeLeftMs] = useState<number>(startTime * 1000);
   const [totalSeconds, setTotalSeconds] = useState<number>(startTime);
@@ -66,7 +67,7 @@ export function Timer(props: TimerProps): JSX.Element {
         <span>{Math.abs(seconds)}s</span>
       </p>
       
-      <button className={styles.switch} onClick={startOrSuspend}>
+      <button className={styles.switch + ' ' + appStyles.button} onClick={startOrSuspend}>
         {running ? "Stabdyti" : "Leisti"}
       </button>
     </div>

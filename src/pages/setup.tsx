@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
-import styles from "../styles/setup.module.css";
+
+import styles from "@/styles/setup.module.scss";
+import appStyles from "@/styles/app.module.scss";
 
 export type Participants = {
   firstProponent: string;
@@ -11,8 +13,7 @@ export type Participants = {
 type InputFieldProps = {
   label: string;
   fieldName: string;
-  onValueChanged: (name: string) => void;
-  type?: "text" | "number";
+  onValueChanged: (value: string) => void;
   initialValue?: string | number;
 };
 
@@ -21,7 +22,6 @@ const InputField = (props: InputFieldProps): JSX.Element => {
     label,
     fieldName,
     onValueChanged,
-    type = "text",
     initialValue = "",
   } = props;
 
@@ -33,7 +33,7 @@ const InputField = (props: InputFieldProps): JSX.Element => {
     <div className={styles.formRow}>
       <label htmlFor={fieldName}>{label}</label>
       <input
-        type={type}
+        type="text"
         required={true}
         name={fieldName}
         onChange={onInputChange}
@@ -81,9 +81,8 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
       <InputField
         label="Kiek minučių?"
         fieldName="minutes"
-        initialValue={5}
-        type="number"
-        onValueChanged={(value) => setMinutes(Number.parseInt(value))}
+        initialValue={1}
+        onValueChanged={(value) => setMinutes(Number.parseFloat(value.replace(',', '.')))}
       />
       {customNames && (
         <>
@@ -132,7 +131,9 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
           />
         </>
       )}
-      <button className={styles.finish} onClick={onFinished}>Pradėti</button>
+      <button
+        className={styles.finish + ' ' + appStyles.button} 
+        onClick={onFinished}>Pradėti</button>
     </form>
   );
 }

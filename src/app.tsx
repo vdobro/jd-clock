@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { ClockPage } from "./pages/clock";
-import { Participants, SetupPage } from "./pages/setup";
 
-const defaultTime = 5; // seconds
+import { ClockPage } from "@/pages/clock";
+import { Participants, SetupPage } from "@/pages/setup";
+
+import styles from "@/styles/app.module.scss";
+
+const defaultTime = 1.5; // seconds
 
 enum AppPage {
   SETUP,
@@ -46,7 +49,11 @@ export default function App(): JSX.Element {
 
   const backButton = (): JSX.Element => {
     if (activePage !== AppPage.SETUP) {
-      return <button onClick={() => setActivePage(AppPage.SETUP)}>Atgal</button>;
+      return <button
+        className={styles.button}
+        onClick={() => setActivePage(AppPage.SETUP)}>
+          Atgal
+      </button>;
     } else return <></>;
   };
 
@@ -58,9 +65,9 @@ export default function App(): JSX.Element {
   const mainBody = (): JSX.Element => <main>{resolvePage()}</main>;
 
   return (
-    <>
+    <div className={styles.root}>
       {header()}
       {mainBody()}
-    </>
+    </div>
   );
 }
