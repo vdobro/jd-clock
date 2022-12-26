@@ -16,6 +16,12 @@
 .card {
   margin: 16px;
   padding: 16px;
+  box-sizing: content-box;
+  display: flex;
+  flex-direction: column;
+
+  width: 180px;
+  height: 180px;
 
   border-radius: 25px;
   background: #e0e0e0;
@@ -34,6 +40,19 @@
   font-weight: 700;
   text-align: center;
   width: 4em;
+  flex-grow: 1;
+  width: 100%;
+  margin-block: unset;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  & > * {
+    flex: 0 1;
+  }
 }
 
 .overflow {

@@ -1,5 +1,7 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+import { AppControlRequest } from "@/app";
+
 import styles from "@/styles/setup.module.scss";
 import appStyles from "@/styles/app.module.scss";
 
@@ -49,6 +51,7 @@ export type SetupPageProps = {
   onNameChanged: (names: Participants) => void;
   onTimeChanged: (minutes: number) => void;
   onFinished: () => void;
+  stateRequest: AppControlRequest;
 };
 
 export function SetupPage(props: SetupPageProps): JSX.Element {
@@ -58,6 +61,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
     onNameChanged,
     onTimeChanged,
     onFinished,
+    stateRequest,
   } = props;
   const [minutes, setMinutes] = useState<number>(initialTimeSetting);
   const [customNames, setCustomNames] = useState<boolean>(true);
