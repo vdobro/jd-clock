@@ -87,13 +87,13 @@ export function Timer(props: TimerProps): JSX.Element {
       </p>
       <div className={styles.value + ((totalSeconds < 0) ? ` ${styles.overflow}` : '')}>
         {totalSeconds < 0 && <span>-</span>}
-        {minutes !== 0 && <span>
+        {minutes !== 0 && <span className={styles.minutes}>
           {Math.abs(minutes)}m
         </span>}
         <span>{Math.abs(seconds)}s</span>
       </div>
       
-      <button className={appStyles.button} onClick={startOrSuspend}>
+      <button className={appStyles.button} onClick={startOrSuspend} type="button">
         {running ? "Stabdyti" : "Leisti"}
       </button>
     </div>

@@ -64,25 +64,28 @@ export default function App(): JSX.Element {
     <button
       className={styles.button}
       onClick={() => setActivePage(AppPage.SETUP)}
+      type="button"
     >
       Atgal
     </button>
   );
 
   const resetButton = (): JSX.Element => (
-    <button className={styles.button} onClick={onResetClick}>
+    <button className={styles.button} onClick={onResetClick} type="button">
       Atstatyti
     </button>
   );
 
   const wrapNavbarButton = (button: JSX.Element): JSX.Element => {
-    return <ol>{button}</ol>;
+    return <li>{button}</li>;
   };
 
   const header = (): JSX.Element => (
     <nav className={styles.navBar}>
-      {activePage !== AppPage.SETUP && wrapNavbarButton(backButton())}
-      {wrapNavbarButton(resetButton())}
+      <ul>
+        {activePage !== AppPage.SETUP && wrapNavbarButton(backButton())}
+        {wrapNavbarButton(resetButton())}
+      </ul>
     </nav>
   );
   const mainBody = (): JSX.Element => (

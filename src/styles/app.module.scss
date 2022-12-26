@@ -24,17 +24,27 @@
   -webkit-text-size-adjust: 100%;
 }
 
-.navBar {
-  display: flex;
-  flex-direction: row;
-  flex: 0 1 100%;
+.main {
   width: 100%;
-  gap: 10px;
+}
 
-  & > ol {
+.navBar {  
+  width: 100%;
+
+  & > ul {
+    display: flex;
+    flex-direction: row;
+    flex: 0 1 100%;
+    width: 100%;
+    gap: 10px;
     box-sizing: border-box;
     padding-inline: 0;
     width: 100%;
+
+    & > li {
+      width: 100%;
+      list-style: none;
+    }
   }
 }
 

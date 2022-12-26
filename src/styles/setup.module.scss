@@ -1,24 +1,26 @@
 .formRow {
-  display: inline-flex;
+  width: 100%;
+  display: flex;
   align-items: center;
   align-content: center;
   justify-content: space-between;
   gap: 0.5rem;
 
   & > * {
-    flex: 1 0 50%;
+    flex: 1 0;
   }
 
   & > label {
     text-align: end;
+    width: 100%;
   }
 }
 
 .input {
   height: 26px;
   min-width: unset;
-  max-width: none;
-  width: 100px;
+  max-width: unset;
+  width: 100%;
 }
 
 .form {
@@ -26,7 +28,6 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  max-width: 500px;
   gap: 0.5rem;
 }
 

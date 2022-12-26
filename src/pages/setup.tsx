@@ -100,7 +100,6 @@ const initialNames: Participants = {
 
 export function SetupPage(props: SetupPageProps): JSX.Element {
   const {
-    participantLabels,
     initialTimeSetting,
     onNameChanged,
     onTimeChanged,
@@ -115,6 +114,17 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
   const onNamesSwitchChanged = (value: boolean) => {
     setCustomNames(value);
   };
+
+  const formatParticipantLabel = (label: string) : string => {
+    return `"${label}" vardas:`;
+  }
+
+  const participantLabels : Participants = {
+    firstProponent: formatParticipantLabel(props.participantLabels.firstProponent),
+    firstOpponent: formatParticipantLabel(props.participantLabels.firstOpponent),
+    secondProponent: formatParticipantLabel(props.participantLabels.secondProponent),
+    secondOpponent: formatParticipantLabel(props.participantLabels.secondOpponent),
+  }
 
   useEffect(() => {
     onNameChanged(names);
