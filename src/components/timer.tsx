@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
-import styles from '../styles/clock.module.scss';
-import appStyles from "../styles/app.module.scss";
+import styles from '@/styles/clock.module.scss';
+import appStyles from "@/styles/app.module.scss";
 
 export enum TimerStateRequest {
   IDLE,
@@ -10,7 +10,8 @@ export enum TimerStateRequest {
 
 export type TimerProps = {
   startTime: number;
-  name: string;
+  label: string;
+  name: string | null;
   color: 'green' | 'darkred';
   stateRequest: TimerStateRequest;
 };
@@ -18,7 +19,7 @@ export type TimerProps = {
 const timerStepMs = 100;
 
 export function Timer(props: TimerProps): JSX.Element {
-  const { startTime, name, color, stateRequest } = props;
+  const { startTime, label, name, color, stateRequest } = props;
 
   const [running, setRunning] = useState<boolean>(false);
   const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timer | null>(null);
@@ -80,7 +81,10 @@ export function Timer(props: TimerProps): JSX.Element {
 
   return (
     <div className={styles.card}>
-      <p className={styles.header} style={{color: color}}>{name}</p>
+      <p className={styles.header} style={{color: color}}>
+        {name && <span>{name}</span>}
+        <span>{label}</span>
+      </p>
       <div className={styles.value + ((totalSeconds < 0) ? ` ${styles.overflow}` : '')}>
         {totalSeconds < 0 && <span>-</span>}
         {minutes !== 0 && <span>

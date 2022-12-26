@@ -19,12 +19,18 @@ const opponentColor = "darkred";
 export function ClockPage(props: ClockPageProps): JSX.Element {
   const { time, roleLabels, names, stateRequest } = props;
 
-  const [timerStateRequest, setTimerStateRequest] = useState<TimerStateRequest>(TimerStateRequest.IDLE);
+  const [timerStateRequest, setTimerStateRequest] = useState<TimerStateRequest>(
+    TimerStateRequest.IDLE
+  );
 
   useEffect(() => {
-    switch(stateRequest) {
-      case AppControlRequest.IDLE: setTimerStateRequest(TimerStateRequest.IDLE); break;
-      case AppControlRequest.RESET: setTimerStateRequest(TimerStateRequest.STOP); break;
+    switch (stateRequest) {
+      case AppControlRequest.IDLE:
+        setTimerStateRequest(TimerStateRequest.IDLE);
+        break;
+      case AppControlRequest.RESET:
+        setTimerStateRequest(TimerStateRequest.STOP);
+        break;
     }
   }, [stateRequest]);
   return (
@@ -32,13 +38,15 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
       <div className={styles.container}>
         <Timer
           startTime={time}
-          name={roleLabels.firstProponent}
+          label={roleLabels.firstProponent}
+          name={names?.firstProponent ?? null}
           color={proponentColor}
           stateRequest={timerStateRequest}
         />
         <Timer
           startTime={time}
-          name={roleLabels.firstOpponent}
+          label={roleLabels.firstOpponent}
+          name={names?.firstOpponent ?? null}
           color={opponentColor}
           stateRequest={timerStateRequest}
         />
@@ -46,13 +54,15 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
       <div className={styles.container}>
         <Timer
           startTime={time}
-          name={roleLabels.secondProponent}
+          label={roleLabels.secondProponent}
+          name={names?.secondProponent ?? null}
           color={proponentColor}
           stateRequest={timerStateRequest}
         />
         <Timer
           startTime={time}
-          name={roleLabels.secondOpponent}
+          label={roleLabels.secondOpponent}
+          name={names?.secondOpponent ?? null}
           color={opponentColor}
           stateRequest={timerStateRequest}
         />

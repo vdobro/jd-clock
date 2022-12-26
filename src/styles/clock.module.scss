@@ -25,14 +25,25 @@
 
   border-radius: 25px;
   background: #e0e0e0;
-  box-shadow: -10px 10px 20px #cacaca, 10px -10px 20px #f6f6f6;
+  @media (prefers-color-scheme: light) {
+    box-shadow: -10px 10px 20px #cacaca, 10px -10px 20px #f6f6f6;
+  }
 }
 
 .header {
   margin-top: 0;
   font-weight: bold;
-  font-size: larger;
+  font-weight: 700;
+  font-size: 1.0em;
   text-align: start;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.2em;
+
+  *:first-child {
+    font-size: 1.5em;
+  }
 }
 
 .value {
