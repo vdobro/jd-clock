@@ -71,7 +71,7 @@ export default function App(): JSX.Element {
 
   const resetButton = (): JSX.Element => (
     <button className={styles.button} onClick={onResetClick}>
-      Atsatyti
+      Atstatyti
     </button>
   );
 
