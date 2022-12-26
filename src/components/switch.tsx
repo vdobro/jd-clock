@@ -8,11 +8,10 @@ export type ToggleSwitchProps = {
   initialValue: boolean;
   round: boolean;
   onValueChange: (value: boolean) => void;
-  stateRequest: InputControlRequest;
 };
 
 export default function ToggleSwitch(props: ToggleSwitchProps): JSX.Element {
-  const { initialValue, round, onValueChange, stateRequest } = props;
+  const { initialValue, round, onValueChange } = props;
   const [value, setValue] = useState<boolean>(initialValue);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -26,13 +25,6 @@ export default function ToggleSwitch(props: ToggleSwitchProps): JSX.Element {
   useEffect(() => {
     onValueChange(value);
   }, [value]);
-
-  useEffect(() => {
-    if (stateRequest === InputControlRequest.RESET && inputRef.current) {
-      inputRef.current.checked = initialValue;
-      setValue(initialValue);
-    }
-  }, [stateRequest]);
 
   return (
     <div className={styles.container}>

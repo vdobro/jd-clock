@@ -49,7 +49,6 @@ export default function App(): JSX.Element {
             initialTimeSetting={defaultTime}
             onNameChanged={setNames}
             onTimeChanged={setMinutes}
-            stateRequest={controlStateRequest}
           />
         );
       case AppPage.CLOCK:
@@ -100,15 +99,20 @@ export default function App(): JSX.Element {
     return <li>{button}</li>;
   };
 
-  const header = (): JSX.Element => (
+  const navigation = (): JSX.Element => (
     <nav className={styles.navBar}>
       <ul>
-        {activePage !== AppPage.SETUP && wrapNavbarButton(backButton())}
-        {wrapNavbarButton(resetButton())}
+        {activePage === AppPage.CLOCK && (
+          <>
+            {wrapNavbarButton(backButton())}
+            {wrapNavbarButton(resetButton())}
+          </>
+        )}
         {activePage === AppPage.SETUP && wrapNavbarButton(nextButton())}
       </ul>
     </nav>
   );
+
   const mainBody = (): JSX.Element => (
     <main className={styles.main}>{resolvePage()}</main>
   );
@@ -122,7 +126,7 @@ export default function App(): JSX.Element {
   return (
     <div className={styles.root}>
       {mainBody()}
-      {header()}
+      {navigation()}
     </div>
   );
 }

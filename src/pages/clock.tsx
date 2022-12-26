@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { AppControlRequest } from "@/app";
+import { AppControlRequest } from "@/pages/app";
 import { Timer, TimerStateRequest } from "@/components/timer";
 import { Participants } from "@/pages/setup";
 

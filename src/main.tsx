@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import App from '@/app'
+import App from '@/pages/app'
 
 ReactDOM.createRoot(document.getElementById('jd-clock-root') as HTMLElement).render(
   <React.StrictMode>
     <App />
   </React.StrictMode>
-)
+);

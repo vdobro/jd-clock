@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import styles from '@/styles/clock.module.scss';
+import styles from "@/styles/clock.module.scss";
 import appStyles from "@/styles/app.module.scss";
 
 export enum TimerStateRequest {
@@ -12,17 +12,20 @@ export type TimerProps = {
   startTime: number;
   label: string;
   name: string | null;
-  color: 'green' | 'darkred';
+  color: "green" | "darkred";
   stateRequest: TimerStateRequest;
 };
 
+const secondsInMinute = 60;
 const timerStepMs = 100;
 
 export function Timer(props: TimerProps): JSX.Element {
   const { startTime, label, name, color, stateRequest } = props;
 
   const [running, setRunning] = useState<boolean>(false);
-  const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timer | null>(null);
+  const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timer | null>(
+    null
+  );
 
   const initialTimerValue = startTime * 1000;
   const [timeLeftMs, setTimeLeftMs] = useState<number>(initialTimerValue);
@@ -35,7 +38,7 @@ export function Timer(props: TimerProps): JSX.Element {
       startOrSuspend();
     }
     setTimeLeftMs(initialTimerValue);
-  }
+  };
 
   const startOrSuspend = () => {
     if (running) {
@@ -62,10 +65,11 @@ export function Timer(props: TimerProps): JSX.Element {
   }, [timeLeftMs]);
 
   useEffect(() => {
-    const minutesLeft = totalSeconds > 0
-      ? Math.floor(totalSeconds / 60) 
-      : Math.ceil(totalSeconds / 60);
-    const secondsLeft = totalSeconds % 60;
+    const minutesLeft =
+      totalSeconds > 0
+        ? Math.floor(totalSeconds / secondsInMinute)
+        : Math.ceil(totalSeconds / secondsInMinute);
+    const secondsLeft = totalSeconds % secondsInMinute;
 
     setMinutes(minutesLeft);
     setSeconds(secondsLeft);
@@ -81,19 +85,27 @@ export function Timer(props: TimerProps): JSX.Element {
 
   return (
     <div className={styles.card}>
-      <p className={styles.header} style={{color: color}}>
+      <p className={styles.header} style={{ color: color }}>
         {name && <span>{name}</span>}
         <span>{label}</span>
       </p>
-      <div className={styles.value + ((totalSeconds < 0) ? ` ${styles.overflow}` : '')}>
+      <div
+        className={
+          styles.value + (totalSeconds < 0 ? ` ${styles.overflow}` : "")
+        }
+      >
         {totalSeconds < 0 && <span>-</span>}
-        {minutes !== 0 && <span className={styles.minutes}>
-          {Math.abs(minutes)}m
-        </span>}
+        {minutes !== 0 && (
+          <span className={styles.minutes}>{Math.abs(minutes)}m</span>
+        )}
         <span>{Math.abs(seconds)}s</span>
       </div>
-      
-      <button className={appStyles.button} onClick={startOrSuspend} type="button">
+
+      <button
+        className={appStyles.button}
+        onClick={startOrSuspend}
+        type="button"
+      >
         {running ? "Stabdyti" : "Leisti"}
       </button>
     </div>
