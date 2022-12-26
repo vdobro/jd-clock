@@ -82,37 +82,42 @@ const InputField = (props: InputFieldProps): JSX.Element => {
   );
 };
 
-export type SetupPageProps = {
-  participantLabels: Participants;
-  initialTimeSetting: number;
-  onNameChanged: (names: Participants) => void;
-  onTimeChanged: (minutes: number) => void;
-  onFinished: () => void;
-  stateRequest: AppControlRequest;
-};
-
-const initialNames: Participants = {
+const emptyNames: Participants = {
   firstProponent: "",
   secondProponent: "",
   firstOpponent: "",
   secondOpponent: "",
 };
 
+export type SetupPageProps = {
+  participantLabels: Participants;
+  initialNames: Participants;
+  useCustomNames: boolean;
+  initialTimeSetting: number;
+  onNameChanged: (names: Participants) => void;
+  onTimeChanged: (minutes: number) => void;
+  stateRequest: AppControlRequest;
+};
+
 export function SetupPage(props: SetupPageProps): JSX.Element {
   const {
     initialTimeSetting,
+    initialNames,
+    useCustomNames,
     onNameChanged,
     onTimeChanged,
-    onFinished,
     stateRequest,
   } = props;
   const [minutes, setMinutes] = useState<number>(initialTimeSetting);
-  const [customNames, setCustomNames] = useState<boolean>(false);
+  const [customNames, setCustomNames] = useState<boolean>(useCustomNames);
   const [names, setNames] = useState<Participants>(initialNames);
   const [inputStateRequest, setInputStateRequest] = useState<InputControlRequest>(InputControlRequest.IDLE);
 
   const onNamesSwitchChanged = (value: boolean) => {
     setCustomNames(value);
+    if (!value) {
+      setNames(emptyNames);
+    }
   };
 
   const formatParticipantLabel = (label: string) : string => {
@@ -165,7 +170,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
         inputElement={
           <ToggleSwitch
             round={true}
-            initialValue={false}
+            initialValue={useCustomNames}
             onValueChange={onNamesSwitchChanged}
             stateRequest={inputStateRequest}
           />
@@ -175,6 +180,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
         <>
           <InputField
             label={participantLabels.firstProponent}
+            initialValue={initialNames.firstProponent}
             fieldName="pro1"
             onValueChanged={(name: string) =>
               setNames({
@@ -187,6 +193,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
 
           <InputField
             label={participantLabels.firstOpponent}
+            initialValue={initialNames.firstOpponent}
             fieldName="contra1"
             onValueChanged={(name: string) =>
               setNames({
@@ -199,6 +206,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
 
           <InputField
             label={participantLabels.secondProponent}
+            initialValue={initialNames.secondProponent}
             fieldName="pro2"
             onValueChanged={(name: string) =>
               setNames({
@@ -211,6 +219,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
 
           <InputField
             label={participantLabels.secondOpponent}
+            initialValue={initialNames.secondOpponent}
             fieldName="contra2"
             onValueChanged={(name: string) =>
               setNames({
@@ -222,13 +231,6 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
           />
         </>
       )}
-      <button
-        type="submit"
-        className={styles.finish + " " + appStyles.button}
-        onClick={onFinished}
-      >
-        Pradėti
-      </button>
     </form>
   );
 }

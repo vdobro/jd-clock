@@ -24,6 +24,13 @@ const participantLabels: Participants = {
   secondOpponent: "Prieš 2",
 };
 
+const initialNames: Participants = {
+  firstProponent: "",
+  secondProponent: "",
+  firstOpponent: "",
+  secondOpponent: "",
+};
+
 export default function App(): JSX.Element {
   const [activePage, setActivePage] = useState<AppPage>(AppPage.SETUP);
   const [names, setNames] = useState<Participants | null>(null);
@@ -37,10 +44,11 @@ export default function App(): JSX.Element {
         return (
           <SetupPage
             participantLabels={participantLabels}
+            useCustomNames={names !== null}
+            initialNames={names ?? initialNames}
             initialTimeSetting={defaultTime}
             onNameChanged={setNames}
             onTimeChanged={setMinutes}
-            onFinished={() => setActivePage(AppPage.CLOCK)}
             stateRequest={controlStateRequest}
           />
         );
@@ -76,6 +84,18 @@ export default function App(): JSX.Element {
     </button>
   );
 
+  const nextButton = (): JSX.Element => {
+    return (
+      <button
+        type="submit"
+        className={styles.finish + " " + styles.button}
+        onClick={() => setActivePage(AppPage.CLOCK)}
+      >
+        Pradėti
+      </button>
+    );
+  };
+
   const wrapNavbarButton = (button: JSX.Element): JSX.Element => {
     return <li>{button}</li>;
   };
@@ -85,6 +105,7 @@ export default function App(): JSX.Element {
       <ul>
         {activePage !== AppPage.SETUP && wrapNavbarButton(backButton())}
         {wrapNavbarButton(resetButton())}
+        {activePage === AppPage.SETUP && wrapNavbarButton(nextButton())}
       </ul>
     </nav>
   );
@@ -100,8 +121,8 @@ export default function App(): JSX.Element {
 
   return (
     <div className={styles.root}>
-      {header()}
       {mainBody()}
+      {header()}
     </div>
   );
 }
