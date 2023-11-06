@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import {JSX, useEffect, useState} from "react";
 
-import { ClockPage } from "@/pages/clock";
 import { Participants, SetupPage } from "@/pages/setup";
+import {ClockSwitcher} from "@/pages/clock-switcher";
 
 import styles from "@/styles/app.module.scss";
+import {TimeSettings} from "@/settings";
 
-const defaultTime = 1; // seconds
+const defaultTime: TimeSettings = {
+  rounds: [1.5, 5, 1] // minutes
+}
 
 enum AppPage {
   SETUP,
@@ -15,6 +18,7 @@ enum AppPage {
 export enum AppControlRequest {
   IDLE,
   RESET,
+  VALIDATE,
 }
 
 const participantLabels: Participants = {
@@ -31,12 +35,22 @@ const initialNames: Participants = {
   secondOpponent: "",
 };
 
+function participantNamesNotEmpty(names: Participants): boolean {
+    return (
+        names.firstProponent.length > 0 ||
+        names.secondProponent.length > 0 ||
+        names.firstOpponent.length > 0 ||
+        names.secondOpponent.length > 0
+    );
+}
+
 export default function App(): JSX.Element {
   const [activePage, setActivePage] = useState<AppPage>(AppPage.SETUP);
-  const [names, setNames] = useState<Participants | null>(null);
-  const [minutes, setMinutes] = useState<number>(defaultTime);
+  const [names, setNames] = useState<Participants>(initialNames);
+  const [timeSettings, setTimeSettings] = useState<TimeSettings>(defaultTime);
   const [controlStateRequest, setControlStateRequest] =
     useState<AppControlRequest>(AppControlRequest.IDLE);
+  const [setupValid, setSetupValid] = useState(true);
 
   const resolvePage = () => {
     switch (activePage) {
@@ -44,22 +58,24 @@ export default function App(): JSX.Element {
         return (
           <SetupPage
             participantLabels={participantLabels}
-            useCustomNames={names !== null}
-            initialNames={names ?? initialNames}
+            useCustomNames={participantNamesNotEmpty(names)}
+            initialNames={names}
             initialTimeSetting={defaultTime}
             onNameChanged={setNames}
-            onTimeChanged={setMinutes}
+            onTimeChanged={setTimeSettings}
+            onValidityChanged={setSetupValid}
           />
         );
       case AppPage.CLOCK:
         return (
-          <ClockPage
-            time={minutes * 60}
+          <ClockSwitcher
+            timeSettings={timeSettings}
             roleLabels={participantLabels}
             names={names}
             stateRequest={controlStateRequest}
+            clockChanged={() => setControlStateRequest(AppControlRequest.RESET)}
           />
-        );
+        )
     }
   };
 
@@ -83,12 +99,20 @@ export default function App(): JSX.Element {
     </button>
   );
 
+  const onNextClicked = () => {
+    setControlStateRequest(AppControlRequest.VALIDATE);
+    setTimeout(() => {
+      setActivePage(AppPage.CLOCK);
+    });
+  }
+
   const nextButton = (): JSX.Element => {
     return (
       <button
         type="submit"
+        disabled={!setupValid}
         className={styles.finish + " " + styles.button}
-        onClick={() => setActivePage(AppPage.CLOCK)}
+        onClick={onNextClicked}
       >
         Pradėti
       </button>

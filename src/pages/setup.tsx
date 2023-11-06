@@ -1,70 +1,18 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
+import {TimeSettings} from "@/settings";
 import ToggleSwitch from "@/components/switch";
 
 import styles from "@/styles/setup.module.scss";
+import {FormRow} from "@/components/form-row";
+import {InputField} from "@/components/input-field";
+import {TimeSetup} from "@/pages/time-setup";
 
 export type Participants = {
   firstProponent: string;
   secondProponent: string;
   firstOpponent: string;
   secondOpponent: string;
-};
-
-type FormRowProps = {
-  label: string;
-  fieldName: string;
-  inputElement: JSX.Element;
-};
-const FormRow = (props: FormRowProps): JSX.Element => {
-  const { label, fieldName, inputElement } = props;
-
-  return (
-    <div className={styles.formRow}>
-      <label htmlFor={fieldName}>{label}</label>
-      {inputElement}
-    </div>
-  );
-};
-
-export enum InputControlRequest {
-  IDLE,
-  RESET,
-}
-
-type InputFieldProps = {
-  label: string;
-  fieldName: string;
-  onValueChanged: (value: string) => void;
-  initialValue?: string;
-};
-
-const InputField = (props: InputFieldProps): JSX.Element => {
-  const { label, fieldName, onValueChanged, initialValue = "" } = props;
-
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    onValueChanged(event.target.value);
-  };
-
-  return (
-    <FormRow
-      label={label}
-      fieldName={fieldName}
-      inputElement={
-        <input
-          ref={inputRef}
-          type="text"
-          className={styles.input}
-          required={true}
-          name={fieldName}
-          onChange={onInputChange}
-          defaultValue={initialValue}
-        />
-      }
-    />
-  );
 };
 
 const emptyNames: Participants = {
@@ -78,9 +26,10 @@ export type SetupPageProps = {
   participantLabels: Participants;
   initialNames: Participants;
   useCustomNames: boolean;
-  initialTimeSetting: number;
+  initialTimeSetting: TimeSettings;
   onNameChanged: (names: Participants) => void;
-  onTimeChanged: (minutes: number) => void;
+  onTimeChanged: (timeSettings: TimeSettings) => void;
+  onValidityChanged: (isValid: boolean) => void;
 };
 
 export function SetupPage(props: SetupPageProps): JSX.Element {
@@ -90,10 +39,11 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
     useCustomNames,
     onNameChanged,
     onTimeChanged,
+    onValidityChanged,
   } = props;
-  const [minutes, setMinutes] = useState<number>(initialTimeSetting);
   const [customNames, setCustomNames] = useState<boolean>(useCustomNames);
   const [names, setNames] = useState<Participants>(initialNames);
+  const [invalidFields, setInvalidFields] = useState<number>(0);
 
   const onNamesSwitchChanged = (value: boolean) => {
     setCustomNames(value);
@@ -104,6 +54,16 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
 
   const formatParticipantLabel = (label: string): string => {
     return `"${label}" vardas:`;
+  };
+
+  const onInputValidityChanged = (isValid: boolean): void => {
+    if (isValid) {
+      if (invalidFields > 0) {
+        setInvalidFields(invalidFields - 1);
+      }
+    } else {
+      setInvalidFields(invalidFields + 1);
+    }
   };
 
   const participantLabels: Participants = {
@@ -126,19 +86,19 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
   }, [names]);
 
   useEffect(() => {
-    onTimeChanged(minutes);
-  }, [minutes]);
+    if (invalidFields === 0) {
+      onValidityChanged(true);
+    } else if (invalidFields === 1) {
+      onValidityChanged(false); // only the first invalid field is interesting
+    }
+  }, [invalidFields]);
 
   return (
     <form className={styles.form}>
-      <InputField
-        label="Kiek minučių?"
-        fieldName="minutes"
-        initialValue={initialTimeSetting + ""}
-        onValueChanged={(value) =>
-          setMinutes(Number.parseFloat(value.replace(",", ".")))
-        }
-      />
+      <TimeSetup
+        initialTimeSetting={initialTimeSetting}
+        onTimeChanged={onTimeChanged}
+        onValidityChanged={onValidityChanged} />
       <FormRow
         label="Naudoti dalyvių vardus?"
         fieldName="use_custom_names"
@@ -162,6 +122,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
                 firstProponent: name,
               })
             }
+            onValidityChanged={onInputValidityChanged}
           />
 
           <InputField
@@ -174,6 +135,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
                 firstOpponent: name,
               })
             }
+            onValidityChanged={onInputValidityChanged}
           />
 
           <InputField
@@ -186,6 +148,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
                 secondProponent: name,
               })
             }
+            onValidityChanged={onInputValidityChanged}
           />
 
           <InputField
@@ -198,6 +161,7 @@ export function SetupPage(props: SetupPageProps): JSX.Element {
                 secondOpponent: name,
               })
             }
+            onValidityChanged={onInputValidityChanged}
           />
         </>
       )}

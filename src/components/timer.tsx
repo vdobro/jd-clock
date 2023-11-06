@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
 import styles from "@/styles/clock.module.scss";
 import appStyles from "@/styles/app.module.scss";
@@ -23,7 +23,7 @@ export function Timer(props: TimerProps): JSX.Element {
   const { startTime, label, name, color, stateRequest } = props;
 
   const [running, setRunning] = useState<boolean>(false);
-  const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timer | null>(
+  const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timeout | null>(
     null
   );
 
@@ -42,11 +42,11 @@ export function Timer(props: TimerProps): JSX.Element {
 
   const startOrSuspend = () => {
     if (running) {
-      const runner = intervalRunner;
+      const runner: NodeJS.Timeout | null = intervalRunner;
       setIntervalRunner(null);
       clearInterval(runner!);
     } else {
-      const runner = setInterval(() => {
+      const runner: NodeJS.Timeout = setInterval(() => {
         setTimeLeftMs((time) => time - timerStepMs);
       }, timerStepMs);
       setIntervalRunner(runner);

@@ -1,6 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from "react";
-
-import { InputControlRequest } from "@/pages/setup";
+import { JSX, ChangeEvent, useEffect, useRef, useState } from "react";
 
 import styles from "@/styles/switch.module.scss";
 

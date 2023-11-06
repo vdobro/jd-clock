@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { JSX, useEffect, useState } from "react";
 
 import { AppControlRequest } from "@/pages/app";
 import { Timer, TimerStateRequest } from "@/components/timer";
@@ -9,7 +9,7 @@ import styles from "@/styles/clock.module.scss";
 export type ClockPageProps = {
   time: number;
   roleLabels: Participants;
-  names: Participants | null;
+  names: Participants;
   stateRequest: AppControlRequest;
 };
 
@@ -39,14 +39,14 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
         <Timer
           startTime={time}
           label={roleLabels.firstProponent}
-          name={names?.firstProponent ?? null}
+          name={names.firstProponent ?? null}
           color={proponentColor}
           stateRequest={timerStateRequest}
         />
         <Timer
           startTime={time}
           label={roleLabels.firstOpponent}
-          name={names?.firstOpponent ?? null}
+          name={names.firstOpponent ?? null}
           color={opponentColor}
           stateRequest={timerStateRequest}
         />
