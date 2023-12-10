@@ -23,6 +23,8 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
     TimerStateRequest.IDLE
   );
 
+  const [currentTimer, setCurrentTimer] = useState<number>(0);
+
   useEffect(() => {
     switch (stateRequest) {
       case AppControlRequest.IDLE:
@@ -42,6 +44,9 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
           name={names.firstProponent ?? null}
           color={proponentColor}
           stateRequest={timerStateRequest}
+          runnerNumber={0}
+          currentlyActiveRunner={currentTimer}
+          setCurrentlyActiveRunner={setCurrentTimer}
         />
         <Timer
           startTime={time}
@@ -49,6 +54,9 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
           name={names.firstOpponent ?? null}
           color={opponentColor}
           stateRequest={timerStateRequest}
+          runnerNumber={1}
+          currentlyActiveRunner={currentTimer}
+          setCurrentlyActiveRunner={setCurrentTimer}
         />
       </div>
       <div className={styles.container}>
@@ -58,6 +66,9 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
           name={names?.secondProponent ?? null}
           color={proponentColor}
           stateRequest={timerStateRequest}
+          runnerNumber={2}
+          currentlyActiveRunner={currentTimer}
+          setCurrentlyActiveRunner={setCurrentTimer}
         />
         <Timer
           startTime={time}
@@ -65,6 +76,9 @@ export function ClockPage(props: ClockPageProps): JSX.Element {
           name={names?.secondOpponent ?? null}
           color={opponentColor}
           stateRequest={timerStateRequest}
+          runnerNumber={3}
+          currentlyActiveRunner={currentTimer}
+          setCurrentlyActiveRunner={setCurrentTimer}
         />
       </div>
     </>

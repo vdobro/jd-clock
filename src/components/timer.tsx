@@ -14,13 +14,25 @@ export type TimerProps = {
   name: string | null;
   color: "green" | "darkred";
   stateRequest: TimerStateRequest;
+  runnerNumber: number;
+  currentlyActiveRunner: number;
+  setCurrentlyActiveRunner: (runnerNumber: number) => void;
 };
 
 const secondsInMinute = 60;
 const timerStepMs = 100;
 
 export function Timer(props: TimerProps): JSX.Element {
-  const { startTime, label, name, color, stateRequest } = props;
+  const {
+    startTime,
+	label,
+    name,
+    color,
+	stateRequest,
+	runnerNumber,
+    currentlyActiveRunner,
+    setCurrentlyActiveRunner
+  } = props;
 
   const [running, setRunning] = useState<boolean>(false);
   const [intervalRunner, setIntervalRunner] = useState<NodeJS.Timeout | null>(
@@ -40,19 +52,37 @@ export function Timer(props: TimerProps): JSX.Element {
     setTimeLeftMs(initialTimerValue);
   };
 
+  const start = () => {
+    const runner: NodeJS.Timeout = setInterval(() => {
+      setTimeLeftMs((time) => time - timerStepMs);
+    }, timerStepMs);
+    setIntervalRunner(runner);
+
+	setCurrentlyActiveRunner(runnerNumber);
+    setRunning(true);
+  }
+
+  const pause = () => {
+    const runner: NodeJS.Timeout | null = intervalRunner;
+    setIntervalRunner(null);
+    clearInterval(runner!);
+    setRunning(false);
+  }
+
   const startOrSuspend = () => {
     if (running) {
-      const runner: NodeJS.Timeout | null = intervalRunner;
-      setIntervalRunner(null);
-      clearInterval(runner!);
+	  pause();
     } else {
-      const runner: NodeJS.Timeout = setInterval(() => {
-        setTimeLeftMs((time) => time - timerStepMs);
-      }, timerStepMs);
-      setIntervalRunner(runner);
+      start();
     }
-    setRunning(!running);
   };
+
+  useEffect(() => {
+    console.log(`this timer is ${runnerNumber} and currently active is ${currentlyActiveRunner}`);
+    if (runnerNumber !== currentlyActiveRunner) {
+      pause();
+    }
+  }, [currentlyActiveRunner]);
 
   useEffect(() => {
     if (stateRequest === TimerStateRequest.STOP) {
